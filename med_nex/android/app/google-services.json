@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "886877755560",
+    "project_id": "mednex-fbf8d",
+    "storage_bucket": "mednex-fbf8d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886877755560:android:081f5835429c9663810a9d",
+        "android_client_info": {
+          "package_name": "com.example.med_nex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886877755560-3llp1jtshrsssaneniigrpirluid5bfo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS5I7HVyYXGP8jztjwxclmZTqOfsKcvfk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "886877755560-3llp1jtshrsssaneniigrpirluid5bfo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "886877755560-2j4hcnr97hd5stripe0r22org5spfeuq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.medNex"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
