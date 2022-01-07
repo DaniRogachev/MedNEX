@@ -5,7 +5,7 @@ import 'package:med_nex/Services/auth.dart';
 class SignIn extends StatefulWidget {
   final Function toggleToRegister;
 
-  SignIn({required this.toggleToRegister});
+  const SignIn({Key? key, required this.toggleToRegister}) : super(key: key);
 
   @override
   _SignInState createState() => _SignInState();
@@ -16,8 +16,15 @@ class _SignInState extends State<SignIn> {
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
 
-  String email = '';
-  String password = '';
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+
+  _nextFocus(FocusNode focusNode){
+    FocusScope.of(context).requestFocus(focusNode);
+  }
+
+  late String email;
+  late String password;
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +38,24 @@ class _SignInState extends State<SignIn> {
         ))
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 validator: (val){
                   if(val!=null && val.isEmpty){
                     return "Enter an email";
                   }
                   return null;
+                },
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                focusNode: _emailFocusNode,
+                onFieldSubmitted: (String value){
+                  _nextFocus(_passwordFocusNode);
                 },
                 decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
@@ -52,7 +65,7 @@ class _SignInState extends State<SignIn> {
                   setState(() => email = val);
                 }
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 validator: (val){
                   if(val!=null && val.isEmpty){
@@ -63,6 +76,7 @@ class _SignInState extends State<SignIn> {
                   }
                   return null;
                 },
+                focusNode: _passwordFocusNode,
                 decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     labelText: 'Password'
@@ -72,7 +86,7 @@ class _SignInState extends State<SignIn> {
                   setState(() => password = val);
                 }
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               OutlinedButton(
                 onPressed: () async{
                   if(_formKey.currentState!.validate()){
@@ -86,7 +100,7 @@ class _SignInState extends State<SignIn> {
                     print("There is something which is not working");
                   }
                 },
-                child: Text(
+                child: const Text(
                   'Sign in'
                 ),
               ),
@@ -94,7 +108,7 @@ class _SignInState extends State<SignIn> {
                   onPressed: (){
                     widget.toggleToRegister();
                   },
-                  child: Text(
+                  child: const Text(
                     "Don't have an account? Register here!"
                   )
               )

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:med_nex/Models/user.dart';
+import 'package:med_nex/Screens/Authenticate/register_doc.dart';
 import 'package:med_nex/Services/auth.dart';
 
 class Register extends StatefulWidget {
   final Function toggleToSignIn;
 
-  Register({required this.toggleToSignIn});
+  const Register({Key? key, required this.toggleToSignIn}) : super(key: key);
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -16,9 +17,17 @@ class _RegisterState extends State<Register> {
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
 
-  String email = '';
-  String username = '';
-  String password = '';
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _usernameFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+
+  _nextFocus(FocusNode focusNode){
+    FocusScope.of(context).requestFocus(focusNode);
+  }
+
+  late String email;
+  late String username;
+  late String password;
 
   @override
   Widget build(BuildContext context) {
@@ -32,18 +41,24 @@ class _RegisterState extends State<Register> {
           ))
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
           key: _formKey,
           child: Column(
               children: <Widget>[
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 TextFormField(
                     validator: (val){
                       if(val!=null && val.isEmpty){
                         return "Enter an email";
                       }
                       return null;
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    focusNode: _emailFocusNode,
+                    onFieldSubmitted: (String value){
+                      _nextFocus(_usernameFocusNode);
                     },
                     decoration: const InputDecoration(
                         border: UnderlineInputBorder(),
@@ -53,13 +68,18 @@ class _RegisterState extends State<Register> {
                       setState(() => email = val);
                     }
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 TextFormField(
                     validator: (val){
                       if(val!=null && val.isEmpty){
                         return "Enter an username";
                       }
                       return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    focusNode: _usernameFocusNode,
+                    onFieldSubmitted: (String value){
+                      _nextFocus(_passwordFocusNode);
                     },
                     decoration: const InputDecoration(
                         border: UnderlineInputBorder(),
@@ -69,7 +89,7 @@ class _RegisterState extends State<Register> {
                       setState(() => username = val);
                     }
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 TextFormField(
                     validator: (val){
                       if(val!=null && val.isEmpty){
@@ -80,6 +100,7 @@ class _RegisterState extends State<Register> {
                       }
                       return null;
                     },
+                    focusNode: _passwordFocusNode,
                     decoration: const InputDecoration(
                         border: UnderlineInputBorder(),
                         labelText: 'Password'
@@ -89,11 +110,11 @@ class _RegisterState extends State<Register> {
                       setState(() => password = val);
                     }
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 OutlinedButton(
                   onPressed: () async{
                     if(_formKey.currentState!.validate()){
-                      RegularUser? user = await _authService.emailRegister(email, password);
+                      RegularUser? user = await _authService.emailRegister(email, username, password);
                       if(user==null){
                         print('There is an error');
                       }else{
@@ -103,15 +124,26 @@ class _RegisterState extends State<Register> {
                       print("There is something which is not working");
                     }
                   },
-                  child: Text(
+                  child: const Text(
                       'Register'
                   ),
+                ),
+                TextButton(
+                  onPressed: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const RegisterDoc()),
+                    );
+                  },
+                  child: const Text(
+                    "Are you a doctor? Sign up as such!"
+                  )
                 ),
                 TextButton(
                     onPressed: (){
                       widget.toggleToSignIn();
                     },
-                    child: Text(
+                    child: const Text(
                         "Already have an account? Sign in here!"
                     )
                 )
