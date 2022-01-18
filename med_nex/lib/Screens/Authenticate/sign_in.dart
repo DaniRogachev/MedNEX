@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:med_nex/Screens/Authenticate/reset_password.dart';
 import 'package:med_nex/Models/user.dart';
 import 'package:med_nex/Services/auth.dart';
 
@@ -111,6 +112,17 @@ class _SignInState extends State<SignIn> {
                   child: const Text(
                     "Don't have an account? Register here!"
                   )
+              ),
+              TextButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ResetPassword()),
+                  );
+                },
+                child: const Text(
+                  "Forgot password?"
+                )
               )
             ]
           ),
