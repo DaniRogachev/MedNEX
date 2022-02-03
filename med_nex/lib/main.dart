@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<RegularUser?>.value(
+    return StreamProvider<FirebaseUser?>.value(
       value: AuthService().user,
       initialData: null,
       child: const MaterialApp(

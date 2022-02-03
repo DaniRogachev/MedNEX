@@ -8,12 +8,12 @@ import 'package:med_nex/Models/medical_specialty.dart';
 class AuthService{
   final FirebaseAuth _auth = FirebaseAuth.instance;
   
-  RegularUser? _getRegularUser(User? user){
-    return user != null ? RegularUser(user.email.toString(), uid: user.uid) : null;
+  FirebaseUser? _getFirebaseUser(User? user){
+    return user != null ? FirebaseUser(user.email.toString(), uid: user.uid) : null;
   }
 
-  Stream<RegularUser?> get user{
-    return _auth.authStateChanges().map(_getRegularUser);
+  Stream<FirebaseUser?> get user{
+    return _auth.authStateChanges().map(_getFirebaseUser);
   }
 
   Future emailRegister(String email, String username, String password) async{
@@ -21,7 +21,7 @@ class AuthService{
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = userCredential.user;
       await DatabaseService().addUser(user!.uid, username, null, null, false, null, null, null, null, null, null);
-      return _getRegularUser(user);
+      return _getFirebaseUser(user);
     }catch(e){
       print(e);
       return null;
@@ -33,7 +33,7 @@ class AuthService{
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = userCredential.user;
       await DatabaseService().addUser(user!.uid, username, middleName, surname, true, int.parse(experience), city, docUin, price, titles.map((title) => title!.name).toList(), medSpecialties.map((medSpecialty) => medSpecialty!.name).toList());
-      return _getRegularUser(user);
+      return _getFirebaseUser(user);
     }catch(e){
       print(e);
       return null;
@@ -44,7 +44,7 @@ class AuthService{
     try{
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User? user = userCredential.user;
-      return _getRegularUser(user);
+      return _getFirebaseUser(user);
     }catch(e){
       print(e);
       return null;

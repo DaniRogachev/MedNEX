@@ -358,7 +358,7 @@ class _RegisterDocState extends State<RegisterDoc> {
             OutlinedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  RegularUser? user = await _authService.doctorRegister(
+                  FirebaseUser? user = await _authService.doctorRegister(
                       email,
                       username,
                       middleName,
