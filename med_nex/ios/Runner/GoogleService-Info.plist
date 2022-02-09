@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>886877755560-2j4hcnr97hd5stripe0r22org5spfeuq.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.886877755560-2j4hcnr97hd5stripe0r22org5spfeuq</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBEIm0hc_NIR4p6vzakPNpfCT0FqS9NES4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>886877755560</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.medNex</string>
+	<key>PROJECT_ID</key>
+	<string>mednex-fbf8d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mednex-fbf8d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:886877755560:ios:570d2148e84ca3a3810a9d</string>
+</dict>
+</plist>
