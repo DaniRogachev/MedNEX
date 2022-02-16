@@ -9,6 +9,7 @@ class FirebaseUser{
 }
 
 class DatabaseUser{
+  late final String uid;
   late final String name;
   late final bool isDoctor;
   late final String? middleName;
@@ -24,6 +25,7 @@ class DatabaseUser{
   late final int balance;
 
   DatabaseUser(
+      this.uid,
       this.name,
       this.isDoctor,
       this.middleName,
@@ -38,7 +40,7 @@ class DatabaseUser{
       this.rates,
       this.balance);
 
-  DatabaseUser.fromSnapshot(DocumentSnapshot snapshot){
+  DatabaseUser.fromSnapshot(DocumentSnapshot snapshot, this.uid){
     name = snapshot["username"];
     isDoctor = snapshot["isDoctor"];
     middleName = snapshot["middleName"];

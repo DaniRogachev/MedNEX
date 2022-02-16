@@ -11,7 +11,8 @@ import 'package:med_nex/Screens/Home/deposit.dart';
 
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  final String uid;
+  const Home({Key? key, required this.uid}) : super(key: key);
 
 
   @override
@@ -106,80 +107,82 @@ class _HomeState extends State<Home> {
               }, icon: const Icon(Icons.logout), label: const Text(''))
             ]
         ),
-        body: Column(
-          children: [
-            const SizedBox(height: 20.0),
-            OutlinedButton(
-                onPressed: (){
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("Filters"),
-                        content: Form(
-                          child: Column(
-                            children: <Widget>[
-                              MultiSelectBottomSheetField(
-                                  initialChildSize: 0.4,
-                                  listType: MultiSelectListType.CHIP,
-                                  searchable: true,
-                                  items: specialties,
-                                  title: const Text("Medical Specialties"),
-                                  buttonIcon: const Icon(
-                                      Icons.add
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 20.0),
+              OutlinedButton(
+                  onPressed: (){
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text("Filters"),
+                          content: Form(
+                            child: Column(
+                              children: <Widget>[
+                                MultiSelectBottomSheetField(
+                                    initialChildSize: 0.4,
+                                    listType: MultiSelectListType.CHIP,
+                                    searchable: true,
+                                    items: specialties,
+                                    title: const Text("Medical Specialties"),
+                                    buttonIcon: const Icon(
+                                        Icons.add
+                                    ),
+                                    buttonText: const Text("Medical Specialties"),
+                                    onConfirm: (val){
+                                      filterData['medicalSpecialties'] = val as List<MedSpecialty?>;
+                                    }
+                                ),
+                                TextFormField(
+                                  decoration: const InputDecoration(
+                                      border: UnderlineInputBorder(),
+                                      labelText: 'City'
                                   ),
-                                  buttonText: const Text("Medical Specialties"),
-                                  onConfirm: (val){
-                                    filterData['medicalSpecialties'] = val as List<MedSpecialty?>;
-                                  }
-                              ),
-                              TextFormField(
-                                decoration: const InputDecoration(
-                                    border: UnderlineInputBorder(),
-                                    labelText: 'City'
+                                  onChanged: (val) {
+                                    if(val.isNotEmpty) {
+                                      setState(() => filterData['City'] = val);
+                                    }
+                                  },
                                 ),
-                                onChanged: (val) {
-                                  if(val.isNotEmpty) {
-                                    setState(() => filterData['City'] = val);
-                                  }
-                                },
-                              ),
-                              TextFormField(
-                                decoration: const InputDecoration(
-                                    border: UnderlineInputBorder(),
-                                    labelText: 'Maximal Price'
+                                TextFormField(
+                                  decoration: const InputDecoration(
+                                      border: UnderlineInputBorder(),
+                                      labelText: 'Maximal Price'
+                                  ),
+                                  onChanged: (val) {
+                                    if(val.isNotEmpty) {
+                                      setState(() => filterData['Price'] = val);
+                                    }
+                                  },
                                 ),
-                                onChanged: (val) {
-                                  if(val.isNotEmpty) {
-                                    setState(() => filterData['Price'] = val);
-                                  }
-                                },
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        actions: [
-                          TextButton(onPressed: () => Navigator.pop(context),
-                            child: const Text('Filter'),)
-                        ],
-                      );
-                    },
-                    barrierDismissible: true,
-                  );
-                },
-                child: const Text("Filter")),
-            const SizedBox(height: 5.0),
-            DoctorList(filters: filterData),
-            OutlinedButton(
-                onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Deposit())
-                  );
-                },
-                child: const Text("Deposit",)
-            )
-          ],
+                          actions: [
+                            TextButton(onPressed: () => Navigator.pop(context),
+                              child: const Text('Filter'),)
+                          ],
+                        );
+                      },
+                      barrierDismissible: true,
+                    );
+                  },
+                  child: const Text("Filter")),
+              const SizedBox(height: 5.0),
+              DoctorList(filters: filterData, uid: widget.uid),
+              OutlinedButton(
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Deposit())
+                    );
+                  },
+                  child: const Text("Deposit",)
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:med_nex/Models/user.dart';
 
 class DatabaseService{
   final CollectionReference users = FirebaseFirestore.instance.collection('users');
+  final CollectionReference requests = FirebaseFirestore.instance.collection('requests');
 
 
   Future addUser(String uid, String username, String? middleName, String? surname, bool isDoctor, int? experience, String? city, String? docUin, String? price, List<String>? titles, List<String>? medSpecialties) async {
@@ -23,6 +24,16 @@ class DatabaseService{
     });
   }
 
+  Future addRequest(String title, String description, String uid, String docUid){
+    return requests.doc(requests.doc().id).set({
+      'user_id': uid,
+      'doc_id': docUid,
+      'title': title,
+      'description': description,
+      'status': "requested"
+    });
+  }
+
   Future<DocumentSnapshot> getCurrUser(String uid) async{
     return await users.doc(uid).get();
   }
@@ -31,9 +42,18 @@ class DatabaseService{
     return users.snapshots();
   }
 
+  Stream<QuerySnapshot> get allRequests{
+    return requests.snapshots();
+  }
+
+  Future acceptRequest(String uid){
+    return requests.doc(uid).update({'status':"accepted"}).then((value) => print("Request Accepted"))
+        .catchError((error) => print("Failed to accept request: $error"));
+  }
+
   Future updateBalance(String uid, int deposit){
-    return users.doc(uid).update({'balance':deposit}).then((value) => print("Balance Updated"))
-        .catchError((error) => print("Failed to update balance: $error"));;
+    return users.doc(uid).update({'balance':FieldValue.increment(deposit)}).then((value) => print("Balance Updated"))
+        .catchError((error) => print("Failed to update balance: $error"));
   }
 
   // Future depositAmount(){

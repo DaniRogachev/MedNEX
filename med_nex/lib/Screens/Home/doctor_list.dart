@@ -5,7 +5,9 @@ import 'package:med_nex/Models/user.dart';
 import 'package:med_nex/Screens/Home/doctor_field.dart';
 
 class DoctorList extends StatefulWidget {
-  const DoctorList({Key? key, required this.filters}) : super(key: key);
+  final String uid;
+
+  const DoctorList({Key? key, required this.filters, required this.uid}) : super(key: key);
 
   final Map? filters;
 
@@ -54,16 +56,19 @@ class _DoctorListState extends State<DoctorList> {
   Widget build(BuildContext context) {
     print("Fitlers empty?");
     print(widget.filters!.isEmpty);
+    var currDocCount = 0;
+    var maxDocCount = 20;
     final allUsers = Provider.of<QuerySnapshot?>(context);
     List<DatabaseUser> doctors = [];
     List<DatabaseUser> filteredDoctors = [];
     if(allUsers != null){
       for(var doc in allUsers.docs){
         Map? userData = doc.data() as Map?;
-        if(userData!["isDoctor"]){
+        if(userData!["isDoctor"] && currDocCount<maxDocCount){
           print(userData);
           print("up here");
-          doctors.add(DatabaseUser(userData["username"], userData["isDoctor"], userData["middleName"], userData["surname"], userData["medicalSpecialties"].cast<String>(), userData["titles"].cast<String>(), userData["experience"], userData["city"], userData["docUin"], userData["price"], userData["rating"], userData["rates"], userData["balance"]));
+          doctors.add(DatabaseUser(doc.id, userData["username"], userData["isDoctor"], userData["middleName"], userData["surname"], userData["medicalSpecialties"].cast<String>(), userData["titles"].cast<String>(), userData["experience"], userData["city"], userData["docUin"], userData["price"], userData["rating"], userData["rates"], userData["balance"]));
+          currDocCount++;
         }
       }
 
@@ -76,7 +81,7 @@ class _DoctorListState extends State<DoctorList> {
       padding: const EdgeInsets.all(8),
       itemCount: filteredDoctors.length,
       itemBuilder: (BuildContext context, int index) {
-        return DoctorField(user: filteredDoctors[index],);
+        return DoctorField(user: filteredDoctors[index], currUserId: widget.uid);
       },
     );
   }
