@@ -18,8 +18,26 @@ class DoctorHome extends StatefulWidget {
 class _DoctorHomeState extends State<DoctorHome> {
   final AuthService _auth = AuthService();
 
-  @override
+  int selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
+
   Widget build(BuildContext context) {
+    List<Widget> options = <Widget>[
+      Container(
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        child: DoctorRequests(uid: widget.uid),
+      ),
+      const Text("One to many requests"),
+      const Text("Chats"),
+      const Text("Settings")
+    ];
+
     print("in doctor home");
     return StreamProvider<QuerySnapshot?>.value(
       value: DatabaseService().allRequests,
@@ -39,10 +57,33 @@ class _DoctorHomeState extends State<DoctorHome> {
               }, icon: Icon(Icons.logout), label: Text(''))
             ]
         ),
-        body: Container(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          child: DoctorRequests(uid: widget.uid)
-        )
+        body: SingleChildScrollView(
+          child: options.elementAt(selectedIndex),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.approval),
+              label: 'My Requests',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.auto_awesome_motion),
+              label: 'All Requests',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: 'Chats',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            )
+          ],
+          currentIndex: selectedIndex,
+          selectedItemColor: Colors.cyan,
+          unselectedItemColor: Colors.cyan[100],
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }

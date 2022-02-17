@@ -77,6 +77,7 @@ class _DoctorListState extends State<DoctorList> {
     }
 
     return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       padding: const EdgeInsets.all(8),
       itemCount: filteredDoctors.length,

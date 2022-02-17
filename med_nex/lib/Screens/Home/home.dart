@@ -22,6 +22,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
 
+  int selectedIndex = 0;
+
+
   static List<MedSpecialty> medSpecialties = [
     MedSpecialty(name: "Accident and Emergency Medicine"),
     MedSpecialty(name: "Allergist"),
@@ -86,8 +89,89 @@ class _HomeState extends State<Home> {
 
   var filterData = {};
 
+  void _onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<Widget> options = <Widget>[
+      SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 20.0),
+            OutlinedButton(
+                onPressed: (){
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("Filters"),
+                        content: Form(
+                          child: Column(
+                            children: <Widget>[
+                              MultiSelectBottomSheetField(
+                                  initialChildSize: 0.4,
+                                  listType: MultiSelectListType.CHIP,
+                                  searchable: true,
+                                  items: specialties,
+                                  title: const Text("Medical Specialties"),
+                                  buttonIcon: const Icon(
+                                      Icons.add
+                                  ),
+                                  buttonText: const Text("Medical Specialties"),
+                                  onConfirm: (val){
+                                    filterData['medicalSpecialties'] = val as List<MedSpecialty?>;
+                                  }
+                              ),
+                              TextFormField(
+                                decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(),
+                                    labelText: 'City'
+                                ),
+                                onChanged: (val) {
+                                  if(val.isNotEmpty) {
+                                    setState(() => filterData['City'] = val);
+                                  }
+                                },
+                              ),
+                              TextFormField(
+                                decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(),
+                                    labelText: 'Maximal Price'
+                                ),
+                                onChanged: (val) {
+                                  if(val.isNotEmpty) {
+                                    setState(() => filterData['Price'] = val);
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        actions: [
+                          TextButton(onPressed: () => Navigator.pop(context),
+                            child: const Text('Filter'),)
+                        ],
+                      );
+                    },
+                    barrierDismissible: true,
+                  );
+                },
+                child: const Text("Filter")),
+            const SizedBox(height: 5.0),
+            DoctorList(filters: filterData, uid: widget.uid),
+          ],
+        ),
+      ),
+      const Text("My Requests"),
+      const Text("Chats"),
+      const Deposit(),
+      const Text("Settings")
+    ];
+
     return StreamProvider<QuerySnapshot?>.value(
       value: DatabaseService().allUsers,
       initialData: null,
@@ -107,82 +191,34 @@ class _HomeState extends State<Home> {
               }, icon: const Icon(Icons.logout), label: const Text(''))
             ]
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 20.0),
-              OutlinedButton(
-                  onPressed: (){
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text("Filters"),
-                          content: Form(
-                            child: Column(
-                              children: <Widget>[
-                                MultiSelectBottomSheetField(
-                                    initialChildSize: 0.4,
-                                    listType: MultiSelectListType.CHIP,
-                                    searchable: true,
-                                    items: specialties,
-                                    title: const Text("Medical Specialties"),
-                                    buttonIcon: const Icon(
-                                        Icons.add
-                                    ),
-                                    buttonText: const Text("Medical Specialties"),
-                                    onConfirm: (val){
-                                      filterData['medicalSpecialties'] = val as List<MedSpecialty?>;
-                                    }
-                                ),
-                                TextFormField(
-                                  decoration: const InputDecoration(
-                                      border: UnderlineInputBorder(),
-                                      labelText: 'City'
-                                  ),
-                                  onChanged: (val) {
-                                    if(val.isNotEmpty) {
-                                      setState(() => filterData['City'] = val);
-                                    }
-                                  },
-                                ),
-                                TextFormField(
-                                  decoration: const InputDecoration(
-                                      border: UnderlineInputBorder(),
-                                      labelText: 'Maximal Price'
-                                  ),
-                                  onChanged: (val) {
-                                    if(val.isNotEmpty) {
-                                      setState(() => filterData['Price'] = val);
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          actions: [
-                            TextButton(onPressed: () => Navigator.pop(context),
-                              child: const Text('Filter'),)
-                          ],
-                        );
-                      },
-                      barrierDismissible: true,
-                    );
-                  },
-                  child: const Text("Filter")),
-              const SizedBox(height: 5.0),
-              DoctorList(filters: filterData, uid: widget.uid),
-              OutlinedButton(
-                  onPressed: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Deposit())
-                    );
-                  },
-                  child: const Text("Deposit",)
-              )
-            ],
-          ),
+        body: options.elementAt(selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.auto_awesome_motion),
+              label: 'My Requests',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: 'Chats',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.attach_money),
+              label: 'Deposit'
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            )
+          ],
+          currentIndex: selectedIndex,
+          selectedItemColor: Colors.cyan,
+          unselectedItemColor: Colors.cyan[100],
+          onTap: _onItemTapped,
         ),
       ),
     );
