@@ -5,9 +5,10 @@ import 'package:med_nex/Models/user.dart';
 import 'package:med_nex/Screens/Home/doctor_field.dart';
 
 class DoctorList extends StatefulWidget {
-  final String uid;
+  //final String uid;
+  final DatabaseUser currUser;
 
-  const DoctorList({Key? key, required this.filters, required this.uid}) : super(key: key);
+  const DoctorList({Key? key, required this.filters, required this.currUser}) : super(key: key);
 
   final Map? filters;
 
@@ -82,7 +83,7 @@ class _DoctorListState extends State<DoctorList> {
       padding: const EdgeInsets.all(8),
       itemCount: filteredDoctors.length,
       itemBuilder: (BuildContext context, int index) {
-        return DoctorField(user: filteredDoctors[index], currUserId: widget.uid);
+        return DoctorField(doctor: filteredDoctors[index], patient:  widget.currUser);
       },
     );
   }

@@ -3,9 +3,10 @@ import 'package:med_nex/Models/user.dart';
 import 'package:med_nex/Screens/Home/request.dart';
 
 class DoctorInfo extends StatelessWidget {
-  final DatabaseUser user;
-  final String currUserId;
-  const DoctorInfo({Key? key, required this.user, required this.currUserId}) : super(key: key);
+  final DatabaseUser doctor;
+  final DatabaseUser patient;
+  //final String currUserId;
+  const DoctorInfo({Key? key, required this.doctor, required this.patient}) : super(key: key);
 
 
   @override
@@ -16,7 +17,7 @@ class DoctorInfo extends StatelessWidget {
       appBar: AppBar(
           backgroundColor: Colors.tealAccent[100],
           elevation: 0.0,
-          title: Text("D-r " + user.name + " " + user.surname!,
+          title: Text("D-r " + doctor.name + " " + doctor.surname!,
               style: TextStyle(
                 color: Colors.cyanAccent[700],
               ))),
@@ -25,17 +26,17 @@ class DoctorInfo extends StatelessWidget {
         child: Column(
           children: <Widget>[
             const SizedBox(height: 10.0),
-            Text("Full name: " + user.name + " " + user.middleName! + " " + user.surname!),
+            Text("Full name: " + doctor.name + " " + doctor.middleName! + " " + doctor.surname!),
             const SizedBox(height: 10.0),
-            Text("Medical specialties: " + user.medicalSpecialties.toString()),
+            Text("Medical specialties: " + doctor.medicalSpecialties.toString()),
             const SizedBox(height: 10.0),
-            Text("Titles: " + user.titles.toString()),
+            Text("Titles: " + doctor.titles.toString()),
             const SizedBox(height: 10.0),
-            Text("Experience: " + user.experience.toString()),
+            Text("Experience: " + doctor.experience.toString()),
             const SizedBox(height: 10.0),
-            Text("Region: " + user.city!),
+            Text("Region: " + doctor.city!),
             const SizedBox(height: 10.0),
-            Text("Price (in leva): " + user.price!),
+            Text("Price (in leva): " + doctor.price!),
             const SizedBox(height: 10.0),
             Row(
               children: <Widget>[
@@ -48,7 +49,7 @@ class DoctorInfo extends StatelessWidget {
                   onPressed: () async {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Request(doctor: user, uid: currUserId)),
+                      MaterialPageRoute(builder: (context) => Request(doctor: doctor, patient: patient,)),
                     );
                   },
                   child: const Text('Request Consultation'),

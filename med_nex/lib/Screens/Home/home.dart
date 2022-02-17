@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:med_nex/Models/medical_specialty.dart';
+import 'package:med_nex/Models/user.dart';
 import 'package:med_nex/Services/auth.dart';
 import 'package:med_nex/Services/database.dart';
 import 'package:provider/provider.dart';
@@ -11,8 +12,9 @@ import 'package:med_nex/Screens/Home/deposit.dart';
 
 
 class Home extends StatefulWidget {
-  final String uid;
-  const Home({Key? key, required this.uid}) : super(key: key);
+  //final String uid;
+  final DatabaseUser currUser;
+  const Home({Key? key, required this.currUser}) : super(key: key);
 
 
   @override
@@ -162,13 +164,13 @@ class _HomeState extends State<Home> {
                 },
                 child: const Text("Filter")),
             const SizedBox(height: 5.0),
-            DoctorList(filters: filterData, uid: widget.uid),
+            DoctorList(filters: filterData, currUser: widget.currUser),
           ],
         ),
       ),
       const Text("My Requests"),
       const Text("Chats"),
-      const Deposit(),
+      Deposit(currUser: widget.currUser),
       const Text("Settings")
     ];
 

@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:med_nex/Models/consultation_request.dart';
+import 'package:med_nex/Models/user.dart';
 import 'package:med_nex/Screens/Home/request_field.dart';
 import 'package:provider/provider.dart';
 
 class DoctorRequests extends StatefulWidget {
   final String uid;
-  const DoctorRequests({Key? key, required this.uid}) : super(key: key);
+  final DatabaseUser doctor;
+  const DoctorRequests({Key? key, required this.uid, required this.doctor}) : super(key: key);
 
   @override
   _DoctorRequestsState createState() => _DoctorRequestsState();
@@ -34,7 +36,7 @@ class _DoctorRequestsState extends State<DoctorRequests> {
       padding: const EdgeInsets.all(8),
       itemCount: requests.length,
       itemBuilder: (BuildContext context, int index) {
-        return RequestField(request: requests[index]);
+        return RequestField(request: requests[index], doctor: widget.doctor,);
       },
     );
   }

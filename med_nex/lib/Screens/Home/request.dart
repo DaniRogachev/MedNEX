@@ -6,9 +6,10 @@ import 'package:provider/provider.dart';
 
 class Request extends StatefulWidget {
   final DatabaseUser doctor;
-  final String uid;
+  final DatabaseUser patient;
+  //final String uid;
 
-  const Request({Key? key, required this.doctor, required this.uid}) : super(key: key);
+  const Request({Key? key, required this.doctor, required this.patient}) : super(key: key);
 
 
   @override
@@ -80,8 +81,10 @@ class _RequestState extends State<Request> {
                     OutlinedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()){
-                          await _databaseService.addRequest(title, description, widget.uid, widget.doctor.uid);
-                          Navigator.pop(context);
+                          if (widget.patient.balance >= int.parse(widget.doctor.price!)) {
+                            await _databaseService.addRequest(title, description, widget.patient, widget.doctor);
+                            Navigator.pop(context);
+                          }
                         }
                       },
                       child: const Text('Request'),

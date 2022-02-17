@@ -24,10 +24,11 @@ class DatabaseService{
     });
   }
 
-  Future addRequest(String title, String description, String uid, String docUid){
+  Future addRequest(String title, String description, DatabaseUser patient, DatabaseUser doctor){
+    updateBalance(patient.uid, -int.parse(doctor.price!));
     return requests.doc(requests.doc().id).set({
-      'user_id': uid,
-      'doc_id': docUid,
+      'user_id': patient.uid,
+      'doc_id': doctor.uid,
       'title': title,
       'description': description,
       'status': "requested"
@@ -46,7 +47,8 @@ class DatabaseService{
     return requests.snapshots();
   }
 
-  Future acceptRequest(String uid){
+  Future acceptRequest(String uid, DatabaseUser doctor){
+    updateBalance(doctor.uid, int.parse(doctor.price!));
     return requests.doc(uid).update({'status':"accepted"}).then((value) => print("Request Accepted"))
         .catchError((error) => print("Failed to accept request: $error"));
   }

@@ -17,7 +17,7 @@ class Start extends StatelessWidget {
               color: Colors.cyanAccent[700],
             ))
         ),
-        body: Container(
+        body: Center(
           child: Column(
             children: <Widget>[
               ElevatedButton(

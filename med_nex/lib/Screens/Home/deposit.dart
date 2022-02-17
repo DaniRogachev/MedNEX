@@ -4,7 +4,9 @@ import 'package:med_nex/Services/database.dart';
 import 'package:provider/provider.dart';
 
 class Deposit extends StatefulWidget {
-  const Deposit({Key? key}) : super(key: key);
+  final DatabaseUser currUser;
+
+  const Deposit({Key? key, required this.currUser}) : super(key: key);
 
   @override
   _DepositState createState() => _DepositState();
@@ -38,14 +40,10 @@ class _DepositState extends State<Deposit> {
               OutlinedButton(
                   onPressed: () async {
                     await DatabaseService().updateBalance(uid, depositAmount);
+                    widget.currUser.updateBalance(depositAmount);
                   },
                   child: const Text("Deposit")
               ),
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Back")),
             ]
           ),
         )

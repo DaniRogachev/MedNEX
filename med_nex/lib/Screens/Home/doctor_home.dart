@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:med_nex/Models/user.dart';
 import 'package:med_nex/Services/auth.dart';
 import 'package:med_nex/Services/database.dart';
 import 'package:provider/provider.dart';
@@ -8,8 +9,9 @@ import 'package:med_nex/Screens/Home/doctor_requests.dart';
 
 class DoctorHome extends StatefulWidget {
   final String uid;
+  final DatabaseUser doctor;
 
-  const DoctorHome({Key? key, required this.uid}) : super(key: key);
+  const DoctorHome({Key? key, required this.uid, required this.doctor}) : super(key: key);
 
   @override
   State<DoctorHome> createState() => _DoctorHomeState();
@@ -31,7 +33,7 @@ class _DoctorHomeState extends State<DoctorHome> {
     List<Widget> options = <Widget>[
       Container(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-        child: DoctorRequests(uid: widget.uid),
+        child: DoctorRequests(uid: widget.uid, doctor: widget.doctor,),
       ),
       const Text("One to many requests"),
       const Text("Chats"),

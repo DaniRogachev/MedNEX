@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:med_nex/Models/consultation_request.dart';
+import 'package:med_nex/Models/user.dart';
 import 'package:med_nex/Services/database.dart';
 
 class RequestField extends StatelessWidget {
   final ConsultationRequest request;
+  final DatabaseUser doctor;
 
 
-  const RequestField({Key? key, required this.request}) : super(key: key);
+  const RequestField({Key? key, required this.request, required this.doctor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class RequestField extends StatelessWidget {
           subtitle: Text(request.description),
           trailing: OutlinedButton(
             onPressed: () async {
-              await DatabaseService().acceptRequest(request.request_id);
+              await DatabaseService().acceptRequest(request.request_id, doctor);
             },
             child: const Text("Accept"),
           )

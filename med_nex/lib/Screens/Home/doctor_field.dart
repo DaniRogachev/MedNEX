@@ -3,9 +3,10 @@ import 'package:med_nex/Models/user.dart';
 import 'package:med_nex/Screens/Home/doctor_info.dart';
 
 class DoctorField extends StatelessWidget {
-  final DatabaseUser user;
-  final String currUserId;
-  const DoctorField({Key? key, required this.user, required this.currUserId}) : super(key: key);
+  final DatabaseUser doctor;
+  final DatabaseUser patient;
+  //final String currUserId;
+  const DoctorField({Key? key, required this.doctor, required this.patient}) : super(key: key);
 
 
   @override
@@ -19,12 +20,12 @@ class DoctorField extends StatelessWidget {
           leading: OutlinedButton.icon(onPressed: () async{
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => DoctorInfo(user: user, currUserId: currUserId)),
+              MaterialPageRoute(builder: (context) => DoctorInfo(doctor: doctor, patient: patient,)),
             );
           }, icon: const Icon(Icons.account_circle), label: const Text('')),
-          title: Text(user.name + " " + user.surname!),
-          subtitle: Text(user.medicalSpecialties.toString()),
-          trailing: Text(user.price! + " leva"),
+          title: Text(doctor.name + " " + doctor.surname!),
+          subtitle: Text(doctor.medicalSpecialties.toString()),
+          trailing: Text(doctor.price! + " leva"),
         )
       )
     );

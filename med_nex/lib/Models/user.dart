@@ -22,7 +22,7 @@ class DatabaseUser{
   late final String? price;
   late final int rating;
   late final int rates;
-  late final int balance;
+  late int balance;
 
   DatabaseUser(
       this.uid,
@@ -62,5 +62,9 @@ class DatabaseUser{
     rating = snapshot["rating"];
     rates = snapshot["rates"];
     balance = snapshot["balance"];
+  }
+
+  void updateBalance(int deposit){
+    balance += deposit;
   }
 }
