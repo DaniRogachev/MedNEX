@@ -31,17 +31,11 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
     if(start){
-      return Container(
-        child: Start(toggleToRegister: toggleToRegister, toggleToSignIn: toggleToSignIn,),
-      );
+      return Start(toggleToRegister: toggleToRegister, toggleToSignIn: toggleToSignIn,);
     }
     if(showRegister){
-      return Container(
-        child: Register(toggleToSignIn: toggleToSignIn,),
-      );
+      return Register(toggleToSignIn: toggleToSignIn,);
     }
-    return Container(
-      child: SignIn(toggleToRegister: toggleToRegister,),
-    );
+    return SignIn(toggleToRegister: toggleToRegister,);
   }
 }

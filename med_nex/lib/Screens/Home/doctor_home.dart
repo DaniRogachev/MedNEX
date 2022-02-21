@@ -29,6 +29,7 @@ class _DoctorHomeState extends State<DoctorHome> {
   }
 
 
+  @override
   Widget build(BuildContext context) {
     List<Widget> options = <Widget>[
       Container(
@@ -56,7 +57,7 @@ class _DoctorHomeState extends State<DoctorHome> {
             actions: <Widget>[
               OutlinedButton.icon(onPressed: () async{
                 await _auth.signOut();
-              }, icon: Icon(Icons.logout), label: Text(''))
+              }, icon: const Icon(Icons.logout), label: const Text(''))
             ]
         ),
         body: SingleChildScrollView(

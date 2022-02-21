@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:med_nex/Models/medical_specialty.dart';
 import 'package:med_nex/Models/user.dart';
+import 'package:med_nex/Screens/Home/patient_request.dart';
 import 'package:med_nex/Services/auth.dart';
 import 'package:med_nex/Services/database.dart';
 import 'package:provider/provider.dart';
@@ -168,7 +169,13 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      const Text("My Requests"),
+      StreamProvider<QuerySnapshot?>.value(
+      value: DatabaseService().allRequests,
+      initialData: null,
+      child: SingleChildScrollView(
+          child: PatientRequests(currUser: widget.currUser,)
+        )
+      ),
       const Text("Chats"),
       Deposit(currUser: widget.currUser),
       const Text("Settings")
@@ -194,6 +201,10 @@ class _HomeState extends State<Home> {
             ]
         ),
         body: options.elementAt(selectedIndex),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {  },
+            child: const Icon(Icons.add),
+          ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(

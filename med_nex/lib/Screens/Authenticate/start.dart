@@ -22,17 +22,17 @@ class Start extends StatelessWidget {
             children: <Widget>[
               ElevatedButton(
                   onPressed: (){
-                    this.toggleToRegister();
+                    toggleToRegister();
                   },
-                  child: Text(
+                  child: const Text(
                       "Register"
                   )
               ),
               ElevatedButton(
                   onPressed: (){
-                    this.toggleToSignIn();
+                    toggleToSignIn();
                   },
-                  child: Text(
+                  child: const Text(
                       "Sign in"
                   )
               ),

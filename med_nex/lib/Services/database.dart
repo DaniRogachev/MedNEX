@@ -53,6 +53,11 @@ class DatabaseService{
         .catchError((error) => print("Failed to accept request: $error"));
   }
 
+  Future cancelRequest(String uid){
+    return requests.doc(uid).update({'status':'cancelled'}).then((value) => print("Request cancelled"))
+        .catchError((error) => print("Failed to cancel request: $error"));
+  }
+
   Future updateBalance(String uid, int deposit){
     return users.doc(uid).update({'balance':FieldValue.increment(deposit)}).then((value) => print("Balance Updated"))
         .catchError((error) => print("Failed to update balance: $error"));
