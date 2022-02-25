@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:med_nex/Models/consultation_request.dart';
 import 'package:med_nex/Models/user.dart';
@@ -12,22 +13,41 @@ class RequestField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Card(
-        margin: const EdgeInsets.fromLTRB(5.0, 6.0, 5.0, 0.0),
-        child: ListTile(
-          leading: Text(request.status),
-          title: Text(request.title),
-          subtitle: Text(request.description),
-          trailing: OutlinedButton(
-            onPressed: () async {
-              await DatabaseService().acceptRequest(request.request_id, doctor);
-            },
-            child: const Text("Accept"),
-          )
-        )
-      )
+    return FutureBuilder(
+      future: DatabaseService().getCurrUser(request.userId),
+      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Object?>> snapshot){
+        if(snapshot.hasError){
+          return Text('Something went wrong');
+        }
+
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return const Text("Document does not exist");
+        }
+
+        if (snapshot.connectionState == ConnectionState.done){
+          return Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Card(
+                  margin: const EdgeInsets.fromLTRB(5.0, 6.0, 5.0, 0.0),
+                  child: ListTile(
+                      leading: Text(request.status),
+                      title: Text(request.title),
+                      subtitle: Text(request.description),
+                      trailing: OutlinedButton(
+                        onPressed: () async {
+                          await DatabaseService().acceptRequest(request.requestId, doctor, DatabaseUser.fromSnapshot(snapshot.data!, snapshot.data!.id));
+                        },
+                        child: const Text("Accept"),
+                      )
+                  )
+              )
+          );
+        }else{
+          return const Text('loading');
+        }
+      },
     );
+
+
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:med_nex/Models/medical_specialty.dart';
 import 'package:med_nex/Models/user.dart';
+import 'package:med_nex/Screens/Home/one_to_many_request.dart';
 import 'package:med_nex/Screens/Home/patient_request.dart';
 import 'package:med_nex/Services/auth.dart';
 import 'package:med_nex/Services/database.dart';
@@ -202,7 +203,12 @@ class _HomeState extends State<Home> {
         ),
         body: options.elementAt(selectedIndex),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {  },
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => OneToManyRequest(user: widget.currUser)),
+              );
+            },
             child: const Icon(Icons.add),
           ),
         bottomNavigationBar: BottomNavigationBar(

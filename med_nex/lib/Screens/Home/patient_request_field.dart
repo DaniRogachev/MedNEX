@@ -21,7 +21,7 @@ class PatientRequestField extends StatelessWidget {
                 subtitle: Text(request.description),
                 trailing: IconButton(
                   onPressed: () async {
-                    await DatabaseService().cancelRequest(request.request_id);
+                    await DatabaseService().cancelRequest(request.requestId);
                   },
                   icon: const Icon(Icons.clear),
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:med_nex/Models/user.dart';
+import 'package:med_nex/Screens/Home/doctor_requests_to_many.dart';
 import 'package:med_nex/Services/auth.dart';
 import 'package:med_nex/Services/database.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +37,11 @@ class _DoctorHomeState extends State<DoctorHome> {
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: DoctorRequests(uid: widget.uid, doctor: widget.doctor,),
       ),
-      const Text("One to many requests"),
+      StreamProvider<QuerySnapshot?>.value(
+        value: DatabaseService().allRequestsToMany,
+        initialData: null,
+        child: DoctorRequestsToMany(doctor: widget.doctor,)
+      ),
       const Text("Chats"),
       const Text("Settings")
     ];

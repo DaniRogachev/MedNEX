@@ -1,5 +1,5 @@
 class ConsultationRequest{
-  late final String request_id;
+  late final String requestId;
   late final String title;
   late final String description;
   late final String status;
@@ -7,5 +7,5 @@ class ConsultationRequest{
   late final String doctorId;
 
   ConsultationRequest(
-      this.title, this.description, this.status, this.userId, this.doctorId, this.request_id);
+      this.title, this.description, this.status, this.userId, this.doctorId, this.requestId);
 }
