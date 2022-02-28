@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:med_nex/Models/chat.dart';
 import 'package:med_nex/Models/message.dart';
 import 'package:med_nex/Models/user.dart';
+import 'package:med_nex/Screens/Chat/message_field.dart';
 import 'package:provider/provider.dart';
 
 class Messages extends StatefulWidget {
@@ -36,7 +37,7 @@ class _MessagesState extends State<Messages> {
       padding: const EdgeInsets.all(8),
       itemCount: messages.length,
       itemBuilder: (BuildContext context, int index){
-        return Text(messages[index].senderName + ': ' + messages[index].text);
+        return MessageField(message: messages[index], currUser: widget.currUser);
       }
     );
   }

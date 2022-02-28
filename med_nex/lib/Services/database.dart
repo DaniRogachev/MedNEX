@@ -97,7 +97,7 @@ class DatabaseService{
   }
 
   Stream<QuerySnapshot> get allChats{
-    return chats.orderBy('lastMessageTime').snapshots();
+    return chats.orderBy('lastMessageTime', descending: true).snapshots();
   }
 
   Stream<QuerySnapshot> chatMessages(Chat chat){
