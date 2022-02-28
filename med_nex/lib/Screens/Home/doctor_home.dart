@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:med_nex/Models/user.dart';
+import 'package:med_nex/Screens/Chat/chats_list.dart';
 import 'package:med_nex/Screens/Home/doctor_requests_to_many.dart';
 import 'package:med_nex/Services/auth.dart';
 import 'package:med_nex/Services/database.dart';
@@ -42,7 +43,13 @@ class _DoctorHomeState extends State<DoctorHome> {
         initialData: null,
         child: DoctorRequestsToMany(doctor: widget.doctor,)
       ),
-      const Text("Chats"),
+      StreamProvider<QuerySnapshot?>.value(
+          value: DatabaseService().allChats,
+          initialData: null,
+          child: SingleChildScrollView(
+              child: ChatsList(currUser: widget.doctor,)
+          )
+      ),
       const Text("Settings")
     ];
 

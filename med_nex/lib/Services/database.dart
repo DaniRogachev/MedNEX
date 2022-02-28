@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:med_nex/Models/chat.dart';
 import 'package:med_nex/Models/request_to_many.dart';
 import 'package:med_nex/Models/user.dart';
 
@@ -57,7 +58,25 @@ class DatabaseService{
       'doctorId': doctorId,
       'patientName': patientName,
       'doctorName': doctorName,
-      'request': requestId
+      'request': requestId,
+      'lastMessage': doctorName + ' has accepted your request',
+      'lastMessageTime': Timestamp.now(),
+      'status': 'active'
+    });
+  }
+  
+  Future createMessage(String message, DatabaseUser sender, Chat chat){
+    final CollectionReference messages = FirebaseFirestore.instance.collection('chats/' + chat.chatId + '/messages');
+    Timestamp currTime = Timestamp.now();
+    chats.doc(chat.chatId).update({
+      'lastMessage': message,
+      'lastMessageTime': currTime
+    });
+    return messages.doc(messages.doc().id).set({
+      'senderId': sender.uid,
+      'senderName': sender.name,
+      'message': message,
+      'time': currTime
     });
   }
 
@@ -75,6 +94,15 @@ class DatabaseService{
 
   Stream<QuerySnapshot> get allRequestsToMany{
     return requestsToMany.snapshots();
+  }
+
+  Stream<QuerySnapshot> get allChats{
+    return chats.orderBy('lastMessageTime').snapshots();
+  }
+
+  Stream<QuerySnapshot> chatMessages(Chat chat){
+    final CollectionReference messages = FirebaseFirestore.instance.collection('chats/' + chat.chatId + '/messages');
+    return messages.orderBy('time').snapshots();
   }
 
   Future acceptRequest(String uid, DatabaseUser doctor, DatabaseUser patient){

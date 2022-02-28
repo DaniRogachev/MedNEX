@@ -25,6 +25,8 @@ class RequestField extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.done){
+          DatabaseUser patient = DatabaseUser.fromSnapshot(snapshot.data!, snapshot.data!.id);
+
           return Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Card(
@@ -32,10 +34,10 @@ class RequestField extends StatelessWidget {
                   child: ListTile(
                       leading: Text(request.status),
                       title: Text(request.title),
-                      subtitle: Text(request.description),
+                      subtitle: Text(patient.name),
                       trailing: OutlinedButton(
                         onPressed: () async {
-                          await DatabaseService().acceptRequest(request.requestId, doctor, DatabaseUser.fromSnapshot(snapshot.data!, snapshot.data!.id));
+                          await DatabaseService().acceptRequest(request.requestId, doctor, patient);
                         },
                         child: const Text("Accept"),
                       )

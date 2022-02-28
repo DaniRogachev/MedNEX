@@ -17,15 +17,16 @@ class DoctorField extends StatelessWidget {
       child: Card(
         margin: const EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: ListTile(
-          leading: OutlinedButton.icon(onPressed: () async{
+          leading: Text(doctor.rating.toString() + " (" + doctor.rates.toString() + ")"),
+          title: Text(doctor.name + " " + doctor.surname!),
+          subtitle: Text(doctor.medicalSpecialties.toString()),
+          trailing: Text(doctor.price! + " leva"),
+          onTap: () async{
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => DoctorInfo(doctor: doctor, patient: patient,)),
             );
-          }, icon: const Icon(Icons.account_circle), label: const Text('')),
-          title: Text(doctor.name + " " + doctor.surname!),
-          subtitle: Text(doctor.medicalSpecialties.toString()),
-          trailing: Text(doctor.price! + " leva"),
+          },
         )
       )
     );

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:med_nex/Models/medical_specialty.dart';
 import 'package:med_nex/Models/user.dart';
+import 'package:med_nex/Screens/Chat/chats_list.dart';
 import 'package:med_nex/Screens/Home/one_to_many_request.dart';
 import 'package:med_nex/Screens/Home/patient_request.dart';
 import 'package:med_nex/Services/auth.dart';
@@ -171,13 +172,19 @@ class _HomeState extends State<Home> {
         ),
       ),
       StreamProvider<QuerySnapshot?>.value(
-      value: DatabaseService().allRequests,
-      initialData: null,
-      child: SingleChildScrollView(
-          child: PatientRequests(currUser: widget.currUser,)
+        value: DatabaseService().allRequests,
+        initialData: null,
+        child: SingleChildScrollView(
+            child: PatientRequests(currUser: widget.currUser,)
+          )
+      ),
+      StreamProvider<QuerySnapshot?>.value(
+        value: DatabaseService().allChats,
+        initialData: null,
+        child: SingleChildScrollView(
+          child: ChatsList(currUser: widget.currUser,)
         )
       ),
-      const Text("Chats"),
       Deposit(currUser: widget.currUser),
       const Text("Settings")
     ];
