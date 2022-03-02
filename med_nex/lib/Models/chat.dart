@@ -10,7 +10,8 @@ class Chat{
   late final String status;
   late final String lastMessage;
   late final Timestamp lastMessageTime;
+  late final bool isRated;
 
   Chat(this.chatId, this.doctorId, this.doctorName, this.patientId, this.patientName,
-      this.request, this.status, this.lastMessage, this.lastMessageTime);
+      this.request, this.status, this.lastMessage, this.lastMessageTime, this.isRated);
 }

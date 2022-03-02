@@ -12,12 +12,20 @@ class DoctorField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    double docRating;
+
+    if(doctor.rates == 0){
+      docRating = 0;
+    }else{
+      docRating = doctor.rating/doctor.rates;
+    }
+
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Card(
         margin: const EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: ListTile(
-          leading: Text(doctor.rating.toString() + " (" + doctor.rates.toString() + ")"),
+          leading: Text(docRating.toString() + " (" + doctor.rates.toString() + ")"),
           title: Text(doctor.name + " " + doctor.surname!),
           subtitle: Text(doctor.medicalSpecialties.toString()),
           trailing: Text(doctor.price! + " leva"),

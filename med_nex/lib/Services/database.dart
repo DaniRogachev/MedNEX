@@ -61,7 +61,8 @@ class DatabaseService{
       'request': requestId,
       'lastMessage': doctorName + ' has accepted your request',
       'lastMessageTime': Timestamp.now(),
-      'status': 'active'
+      'status': 'active',
+      'isRated': false
     });
   }
   
@@ -130,6 +131,19 @@ class DatabaseService{
   Future updateBalance(String uid, int deposit){
     return users.doc(uid).update({'balance':FieldValue.increment(deposit)}).then((value) => print("Balance Updated"))
         .catchError((error) => print("Failed to update balance: $error"));
+  }
+
+  Future finishConsultation(Chat chat){
+    return chats.doc(chat.chatId).update({
+      'status':'finished'
+    }).then((value) => print('Consultation finished')).catchError((error) => print('Failed to finish consultation'));
+  }
+
+  Future updateRating(String docUid, int rate){
+    return users.doc(docUid).update({
+      'rating':FieldValue.increment(rate),
+      'rates': FieldValue.increment(1)
+    }).then((value) => print('Rated')).catchError((error) => print('Failed to rate'));
   }
 
   // Future depositAmount(){
