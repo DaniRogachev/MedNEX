@@ -139,7 +139,10 @@ class DatabaseService{
     }).then((value) => print('Consultation finished')).catchError((error) => print('Failed to finish consultation'));
   }
 
-  Future updateRating(String docUid, int rate){
+  Future updateRating(String docUid, int rate, String chatId){
+    chats.doc(chatId).update({
+      'isRated': true,
+    });
     return users.doc(docUid).update({
       'rating':FieldValue.increment(rate),
       'rates': FieldValue.increment(1)

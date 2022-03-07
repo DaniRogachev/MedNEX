@@ -216,7 +216,7 @@ class _ChatRoomState extends State<ChatRoom> {
               ),
               TextButton(
                 onPressed: () {
-                  DatabaseService().updateRating(widget.chat.doctorId, rating);
+                  DatabaseService().updateRating(widget.chat.doctorId, rating, widget.chat.chatId);
                   Navigator.pop(context);
                 },
                 child: const Text('Ok'),

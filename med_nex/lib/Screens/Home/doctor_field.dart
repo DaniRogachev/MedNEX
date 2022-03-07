@@ -25,7 +25,7 @@ class DoctorField extends StatelessWidget {
       child: Card(
         margin: const EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: ListTile(
-          leading: Text(docRating.toString() + " (" + doctor.rates.toString() + ")"),
+          leading: Text(docRating.toStringAsFixed(1) + " (" + doctor.rates.toString() + ")"),
           title: Text(doctor.name + " " + doctor.surname!),
           subtitle: Text(doctor.medicalSpecialties.toString()),
           trailing: Text(doctor.price! + " leva"),
