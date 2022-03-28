@@ -91,7 +91,7 @@ class _SignInState extends State<SignIn> {
               OutlinedButton(
                 onPressed: () async{
                   if(_formKey.currentState!.validate()){
-                    FirebaseUser? user = await _authService.emailSignIn(email, password);
+                    FirebaseUser? user = await _authService.signIn(email, password);
                     if(user==null){
                       print('There is an error');
                     }else{

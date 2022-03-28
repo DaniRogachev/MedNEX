@@ -39,10 +39,12 @@ class DatabaseService{
     });
   }
 
-  Future addOneToManyRequest(String title, String description, List<String> medSpecialties, int price, DatabaseUser patient){
+  Future addOneToManyRequest(String title, String description,
+      List<String> medSpecialties, int price, DatabaseUser patient){
     updateBalance(patient.uid, -price);
     return requestsToMany.doc(requestsToMany.doc().id).set({
       'patient': users.doc(patient.uid),
+      'patient_id': patient.uid,
       'title': title,
       'description': description,
       'medicalSpecialties': medSpecialties,
@@ -106,6 +108,11 @@ class DatabaseService{
     return messages.orderBy('time').snapshots();
   }
 
+  Future updateUsername(String uid, String username){
+    return users.doc(uid).update({'username':username}).then((value) => print("Username Updated"))
+        .catchError((error) => print("Failed to update balance: $error"));
+  }
+
   Future acceptRequest(String uid, DatabaseUser doctor, DatabaseUser patient){
     updateBalance(doctor.uid, int.parse(doctor.price!));
     createChatRoom(patient.uid, doctor.uid, patient.name, doctor.name, uid);
@@ -128,8 +135,14 @@ class DatabaseService{
         .catchError((error) => print("Failed to cancel request: $error"));
   }
 
+  Future cancelRequestToMany(String uid){
+    return requestsToMany.doc(uid).update({'status':'cancelled'}).then((value) => print("Request cancelled"))
+        .catchError((error) => print("Failed to cancel request: $error"));
+  }
+
   Future updateBalance(String uid, int deposit){
-    return users.doc(uid).update({'balance':FieldValue.increment(deposit)}).then((value) => print("Balance Updated"))
+    return users.doc(uid).update({'balance':FieldValue.increment(deposit)})
+        .then((value) => print("Balance Updated"))
         .catchError((error) => print("Failed to update balance: $error"));
   }
 

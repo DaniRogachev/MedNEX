@@ -40,6 +40,8 @@ dependencies:
   dropdown_plus: ^0.0.9
   multi_select_flutter: ^4.0.0
   flutter_rating_bar: ^4.0.0
+  flutter_stripe: ^2.3.0
+  http: ^0.13.4
 
 dev_dependencies:
   flutter_test:

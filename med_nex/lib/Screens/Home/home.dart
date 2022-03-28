@@ -5,6 +5,8 @@ import 'package:med_nex/Models/user.dart';
 import 'package:med_nex/Screens/Chat/chats_list.dart';
 import 'package:med_nex/Screens/Home/one_to_many_request.dart';
 import 'package:med_nex/Screens/Home/patient_request.dart';
+import 'package:med_nex/Screens/Home/patient_requests_to_many.dart';
+import 'package:med_nex/Screens/Settings/patient_settings.dart';
 import 'package:med_nex/Services/auth.dart';
 import 'package:med_nex/Services/database.dart';
 import 'package:provider/provider.dart';
@@ -100,8 +102,29 @@ class _HomeState extends State<Home> {
     });
   }
 
+  var expandedDoctors = 0;
+
+  int selectedPatientRequestOption = 0;
+
   @override
   Widget build(BuildContext context) {
+    List<Widget> patientRequestsOptions = <Widget>[
+      StreamProvider<QuerySnapshot?>.value(
+          value: DatabaseService().allRequests,
+          initialData: null,
+          child: SingleChildScrollView(
+              child: PatientRequests(currUser: widget.currUser,)
+          )
+      ),
+      StreamProvider<QuerySnapshot?>.value(
+        value: DatabaseService().allRequestsToMany,
+        initialData: null,
+        child: SingleChildScrollView(
+            child: PatientRequestsToMany(currUser: widget.currUser,)
+        )
+      )
+    ];
+
     List<Widget> options = <Widget>[
       SingleChildScrollView(
         child: Column(
@@ -167,16 +190,40 @@ class _HomeState extends State<Home> {
                 },
                 child: const Text("Filter")),
             const SizedBox(height: 5.0),
-            DoctorList(filters: filterData, currUser: widget.currUser),
+            DoctorList(filters: filterData, currUser: widget.currUser, expandedDoctors: expandedDoctors,),
+            OutlinedButton(
+                onPressed: (){
+                  expandedDoctors += 8;
+                  print(expandedDoctors);
+                },
+                child: const Text('Expand'))
           ],
         ),
       ),
-      StreamProvider<QuerySnapshot?>.value(
-        value: DatabaseService().allRequests,
-        initialData: null,
-        child: SingleChildScrollView(
-            child: PatientRequests(currUser: widget.currUser,)
-          )
+      SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                OutlinedButton(
+                    onPressed: (){
+                      selectedPatientRequestOption = 0;
+                      print(selectedPatientRequestOption);
+                    },
+                    child: const Text('One Doctor')
+                ),
+                OutlinedButton(
+                  onPressed: (){
+                    selectedPatientRequestOption = 1;
+                    print(selectedPatientRequestOption);
+                  },
+                  child: const Text('Many Doctors')
+                )
+              ],
+            ),
+            patientRequestsOptions[selectedPatientRequestOption],
+          ]
+        )
       ),
       StreamProvider<QuerySnapshot?>.value(
         value: DatabaseService().allChats,
@@ -186,7 +233,7 @@ class _HomeState extends State<Home> {
         )
       ),
       Deposit(currUser: widget.currUser),
-      const Text("Settings")
+      PatientSettings(currUser: widget.currUser),
     ];
 
     return StreamProvider<QuerySnapshot?>.value(

@@ -7,8 +7,9 @@ import 'package:med_nex/Screens/Home/doctor_field.dart';
 class DoctorList extends StatefulWidget {
   //final String uid;
   final DatabaseUser currUser;
+  final int expandedDoctors;
 
-  const DoctorList({Key? key, required this.filters, required this.currUser}) : super(key: key);
+  const DoctorList({Key? key, required this.filters, required this.currUser, required this.expandedDoctors}) : super(key: key);
 
   final Map? filters;
 
@@ -58,14 +59,13 @@ class _DoctorListState extends State<DoctorList> {
     print("Fitlers empty?");
     print(widget.filters!.isEmpty);
     var currDocCount = 0;
-    var maxDocCount = 20;
     final allUsers = Provider.of<QuerySnapshot?>(context);
     List<DatabaseUser> doctors = [];
     List<DatabaseUser> filteredDoctors = [];
     if(allUsers != null){
       for(var doc in allUsers.docs){
         Map? userData = doc.data() as Map?;
-        if(userData!["isDoctor"] && currDocCount<maxDocCount){
+        if(userData!["isDoctor"] && currDocCount<widget.expandedDoctors + 20){
           print(userData);
           print("up here");
           doctors.add(DatabaseUser(doc.id, userData["username"], userData["isDoctor"], userData["middleName"], userData["surname"], userData["medicalSpecialties"].cast<String>(), userData["titles"].cast<String>(), userData["experience"], userData["city"], userData["docUin"], userData["price"], userData["rating"], userData["rates"], userData["balance"]));

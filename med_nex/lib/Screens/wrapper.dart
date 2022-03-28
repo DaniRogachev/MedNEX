@@ -21,11 +21,5 @@ class Wrapper extends StatelessWidget {
     else{
       return HomeWrapper(uid: user.uid,);
     }
-
-    // return FutureBuilder(
-    //     builder: (context, snapshot) {
-    //       return Authenticate();
-    //     }
-    // );
   }
 }

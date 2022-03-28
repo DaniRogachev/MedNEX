@@ -16,11 +16,13 @@ class AuthService{
     return _auth.authStateChanges().map(_getFirebaseUser);
   }
 
-  Future emailRegister(String email, String username, String password) async{
+  Future patientRegister(String email, String username, String password) async{
     try{
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       User? user = userCredential.user;
-      await DatabaseService().addUser(user!.uid, username, null, null, false, null, null, null, null, null, null);
+      await DatabaseService().addUser(
+          user!.uid, username, null, null, false, null, null, null, null, null, null);
       return _getFirebaseUser(user);
     }catch(e){
       print(e);
@@ -40,9 +42,10 @@ class AuthService{
     }
   }
 
-  Future emailSignIn(String email, String password) async{
+  Future signIn(String email, String password) async{
     try{
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       User? user = userCredential.user;
       return _getFirebaseUser(user);
     }catch(e){
@@ -66,6 +69,16 @@ class AuthService{
     }catch(e){
       print(e.toString());
       return null;
+    }
+  }
+
+  Future deleteAccount() async{
+    try{
+      return await _auth.currentUser!.delete();
+    }on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        print('The user must reauthenticate before this operation can be executed.');
+      }
     }
   }
 }
