@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:med_nex/Models/user.dart';
 import 'package:med_nex/Screens/Chat/chats_list.dart';
 import 'package:med_nex/Screens/Home/doctor_requests_to_many.dart';
+import 'package:med_nex/Screens/Settings/doctor_settings.dart';
 import 'package:med_nex/Services/auth.dart';
 import 'package:med_nex/Services/database.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +51,7 @@ class _DoctorHomeState extends State<DoctorHome> {
               child: ChatsList(currUser: widget.doctor,)
           )
       ),
-      const Text("Settings")
+      DoctorSettings(currUser: widget.doctor)
     ];
 
     print("in doctor home");

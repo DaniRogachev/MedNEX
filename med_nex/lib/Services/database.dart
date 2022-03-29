@@ -69,7 +69,8 @@ class DatabaseService{
   }
   
   Future createMessage(String message, DatabaseUser sender, Chat chat){
-    final CollectionReference messages = FirebaseFirestore.instance.collection('chats/' + chat.chatId + '/messages');
+    final CollectionReference messages = FirebaseFirestore.instance
+        .collection('chats/' + chat.chatId + '/messages');
     Timestamp currTime = Timestamp.now();
     chats.doc(chat.chatId).update({
       'lastMessage': message,
@@ -104,30 +105,40 @@ class DatabaseService{
   }
 
   Stream<QuerySnapshot> chatMessages(Chat chat){
-    final CollectionReference messages = FirebaseFirestore.instance.collection('chats/' + chat.chatId + '/messages');
+    final CollectionReference messages = FirebaseFirestore.instance
+        .collection('chats/' + chat.chatId + '/messages');
     return messages.orderBy('time').snapshots();
   }
 
   Future updateUsername(String uid, String username){
-    return users.doc(uid).update({'username':username}).then((value) => print("Username Updated"))
-        .catchError((error) => print("Failed to update balance: $error"));
+    return users.doc(uid).
+    update({'username':username}).then((value) => print("Username Updated"))
+        .catchError((error) => print("Failed to update username: $error"));
+  }
+
+  Future updatePrice(String uid, String price){
+    return users.doc(uid).update({'price':price})
+        .then((value) => print("Price Updated"))
+        .catchError((error) => print("Failed to update price: $error"));
   }
 
   Future acceptRequest(String uid, DatabaseUser doctor, DatabaseUser patient){
     updateBalance(doctor.uid, int.parse(doctor.price!));
     createChatRoom(patient.uid, doctor.uid, patient.name, doctor.name, uid);
-    return requests.doc(uid).update({'status':"accepted"}).then((value) => print("Request Accepted"))
+    return requests.doc(uid).update({'status':"accepted"}).
+    then((value) => print("Request Accepted"))
         .catchError((error) => print("Failed to accept request: $error"));
   }
 
   Future acceptRequestToMany(RequestToMany request, DatabaseUser doctor){
     updateBalance(doctor.uid, request.price);
-    createChatRoom(request.patient.uid, doctor.uid, request.patient.name, doctor.name, request.uid);
+    createChatRoom(
+        request.patient.uid, doctor.uid, request.patient.name, doctor.name, request.uid);
     return requestsToMany.doc(request.uid).update({
       'status':"accepted",
       'doctor': users.doc(doctor.uid)
-    }).then((value) => print("Request Accepted")).catchError((error) => print("Failed to accept request: $error"));
-
+    }).then((value) => print("Request Accepted")).
+    catchError((error) => print("Failed to accept request: $error"));
   }
 
   Future cancelRequest(String uid){
@@ -149,7 +160,8 @@ class DatabaseService{
   Future finishConsultation(Chat chat){
     return chats.doc(chat.chatId).update({
       'status':'finished'
-    }).then((value) => print('Consultation finished')).catchError((error) => print('Failed to finish consultation'));
+    }).then((value) => print('Consultation finished'))
+        .catchError((error) => print('Failed to finish consultation'));
   }
 
   Future updateRating(String docUid, int rate, String chatId){
@@ -159,7 +171,8 @@ class DatabaseService{
     return users.doc(docUid).update({
       'rating':FieldValue.increment(rate),
       'rates': FieldValue.increment(1)
-    }).then((value) => print('Rated')).catchError((error) => print('Failed to rate'));
+    }).then((value) => print('Rated'))
+        .catchError((error) => print('Failed to rate'));
   }
 
   // Future depositAmount(){

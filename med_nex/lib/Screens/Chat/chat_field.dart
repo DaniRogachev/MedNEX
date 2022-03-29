@@ -15,8 +15,9 @@ class ChatField extends StatefulWidget {
 }
 
 class _ChatFieldState extends State<ChatField> {
-  String convertToString(Timestamp timestamp){
-    Duration difference = Timestamp.now().toDate().difference(timestamp.toDate());
+  String getTime(Timestamp timestamp){
+    Duration difference = Timestamp.now()
+        .toDate().difference(timestamp.toDate());
     if(difference.inDays > 0){
       return difference.inDays.toString() + " days";
     }else if(difference.inHours > 0){
@@ -43,7 +44,7 @@ class _ChatFieldState extends State<ChatField> {
         margin: const EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: ListTile(
           title: Text(chatpalName),
-          subtitle: Text(widget.chat.lastMessage + " : " + convertToString(widget.chat.lastMessageTime)),
+          subtitle: Text(widget.chat.lastMessage + " : " + getTime(widget.chat.lastMessageTime)),
           onTap: () {
             Navigator.push(
               context,
