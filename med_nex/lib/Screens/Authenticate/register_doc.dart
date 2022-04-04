@@ -349,7 +349,7 @@ class _RegisterDocState extends State<RegisterDoc> {
                 focusNode: _priceFocusNode,
                 decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Consultation price (in leva)'),
+                    labelText: 'Consultation price'),
                 keyboardType: TextInputType.number,
                 onChanged: (val) {
                   setState(() => price = val);

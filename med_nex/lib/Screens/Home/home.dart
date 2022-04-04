@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:med_nex/Models/medical_specialty.dart';
+import 'package:med_nex/Models/user.dart';
+import 'package:med_nex/Screens/Chat/chats_list.dart';
+import 'package:med_nex/Screens/Home/one_to_many_request.dart';
+import 'package:med_nex/Screens/Home/patient_request.dart';
+import 'package:med_nex/Screens/Home/patient_requests_to_many.dart';
+import 'package:med_nex/Screens/Settings/patient_settings.dart';
 import 'package:med_nex/Services/auth.dart';
 import 'package:med_nex/Services/database.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +17,9 @@ import 'package:med_nex/Screens/Home/deposit.dart';
 
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  //final String uid;
+  final DatabaseUser currUser;
+  const Home({Key? key, required this.currUser}) : super(key: key);
 
 
   @override
@@ -20,6 +28,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
+
+  int selectedIndex = 0;
+
 
   static List<MedSpecialty> medSpecialties = [
     MedSpecialty(name: "Accident and Emergency Medicine"),
@@ -85,28 +96,38 @@ class _HomeState extends State<Home> {
 
   var filterData = {};
 
+  void _onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
+  var expandedDoctors = 0;
+
+  int selectedPatientRequestOption = 0;
+
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<QuerySnapshot?>.value(
-      value: DatabaseService().allUsers,
-      initialData: null,
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.cyan[50],
-        appBar: AppBar(
-            backgroundColor: Colors.tealAccent[100],
-            elevation: 0.0,
-            title: Text('MedNEX', style: TextStyle(
-              color: Colors.cyanAccent[700],
-            ), textAlign: TextAlign.center,
-            ),
-            actions: <Widget>[
-              OutlinedButton.icon(onPressed: () async{
-                await _auth.signOut();
-              }, icon: const Icon(Icons.logout), label: const Text(''))
-            ]
-        ),
-        body: Column(
+    List<Widget> patientRequestsOptions = <Widget>[
+      StreamProvider<QuerySnapshot?>.value(
+          value: DatabaseService().allRequests,
+          initialData: null,
+          child: SingleChildScrollView(
+              child: PatientRequests(currUser: widget.currUser,)
+          )
+      ),
+      StreamProvider<QuerySnapshot?>.value(
+        value: DatabaseService().allRequestsToMany,
+        initialData: null,
+        child: SingleChildScrollView(
+            child: PatientRequestsToMany(currUser: widget.currUser,)
+        )
+      )
+    ];
+
+    List<Widget> options = <Widget>[
+      SingleChildScrollView(
+        child: Column(
           children: [
             const SizedBox(height: 20.0),
             OutlinedButton(
@@ -169,17 +190,108 @@ class _HomeState extends State<Home> {
                 },
                 child: const Text("Filter")),
             const SizedBox(height: 5.0),
-            DoctorList(filters: filterData),
+            DoctorList(filters: filterData, currUser: widget.currUser, expandedDoctors: expandedDoctors,),
             OutlinedButton(
                 onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Deposit())
-                  );
+                  expandedDoctors += 8;
+                  print(expandedDoctors);
                 },
-                child: const Text("Deposit",)
+                child: const Text('Expand'))
+          ],
+        ),
+      ),
+      SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                OutlinedButton(
+                    onPressed: (){
+                      selectedPatientRequestOption = 0;
+                      print(selectedPatientRequestOption);
+                    },
+                    child: const Text('One Doctor')
+                ),
+                OutlinedButton(
+                  onPressed: (){
+                    selectedPatientRequestOption = 1;
+                    print(selectedPatientRequestOption);
+                  },
+                  child: const Text('Many Doctors')
+                )
+              ],
+            ),
+            patientRequestsOptions[selectedPatientRequestOption],
+          ]
+        )
+      ),
+      StreamProvider<QuerySnapshot?>.value(
+        value: DatabaseService().allChats,
+        initialData: null,
+        child: SingleChildScrollView(
+          child: ChatsList(currUser: widget.currUser,)
+        )
+      ),
+      Deposit(currUser: widget.currUser),
+      PatientSettings(currUser: widget.currUser),
+    ];
+
+    return StreamProvider<QuerySnapshot?>.value(
+      value: DatabaseService().allUsers,
+      initialData: null,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.cyan[50],
+        appBar: AppBar(
+            backgroundColor: Colors.tealAccent[100],
+            elevation: 0.0,
+            title: Text('MedNEX', style: TextStyle(
+              color: Colors.cyanAccent[700],
+            ), textAlign: TextAlign.center,
+            ),
+            actions: <Widget>[
+              OutlinedButton.icon(onPressed: () async{
+                await _auth.signOut();
+              }, icon: const Icon(Icons.logout), label: const Text(''))
+            ]
+        ),
+        body: options.elementAt(selectedIndex),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => OneToManyRequest(user: widget.currUser)),
+              );
+            },
+            child: const Icon(Icons.add),
+          ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.auto_awesome_motion),
+              label: 'My Requests',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: 'Chats',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.attach_money),
+              label: 'Deposit'
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
             )
           ],
+          currentIndex: selectedIndex,
+          selectedItemColor: Colors.cyan,
+          unselectedItemColor: Colors.cyan[100],
+          onTap: _onItemTapped,
         ),
       ),
     );

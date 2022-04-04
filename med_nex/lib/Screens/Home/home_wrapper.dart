@@ -35,15 +35,15 @@ class _HomeWrapperState extends State<HomeWrapper> {
         }
 
         if (snapshot.connectionState == ConnectionState.done){
-          DatabaseUser currUser = DatabaseUser.fromSnapshot(snapshot.data!);
+          DatabaseUser currUser = DatabaseUser.fromSnapshot(snapshot.data!, widget.uid);
           if(currUser.isDoctor){
-            return DoctorHome();
+            return DoctorHome(uid: widget.uid, doctor: currUser,);
           }
           else {
-            return Home();
+            return Home(currUser: currUser);
           }
         }else {
-          return const Text("Something went wrong");
+          return const Text("Loading");
         }
       },
 

@@ -17,22 +17,22 @@ class Start extends StatelessWidget {
               color: Colors.cyanAccent[700],
             ))
         ),
-        body: Container(
+        body: Center(
           child: Column(
             children: <Widget>[
               ElevatedButton(
                   onPressed: (){
-                    this.toggleToRegister();
+                    toggleToRegister();
                   },
-                  child: Text(
+                  child: const Text(
                       "Register"
                   )
               ),
               ElevatedButton(
                   onPressed: (){
-                    this.toggleToSignIn();
+                    toggleToSignIn();
                   },
-                  child: Text(
+                  child: const Text(
                       "Sign in"
                   )
               ),

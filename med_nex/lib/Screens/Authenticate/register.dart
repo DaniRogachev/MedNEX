@@ -114,7 +114,7 @@ class _RegisterState extends State<Register> {
                 OutlinedButton(
                   onPressed: () async{
                     if(_formKey.currentState!.validate()){
-                      FirebaseUser? user = await _authService.emailRegister(email, username, password);
+                      FirebaseUser? user = await _authService.patientRegister(email, username, password);
                       if(user==null){
                         print('There is an error');
                       }else{
