@@ -43,7 +43,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
             return Home(currUser: currUser);
           }
         }else {
-          return const Text("Something went wrong");
+          return const Text("Loading");
         }
       },
 
