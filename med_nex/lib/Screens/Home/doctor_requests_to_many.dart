@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:med_nex/Models/consultation_request.dart';
 import 'package:med_nex/Models/request_to_many.dart';
 import 'package:med_nex/Models/user.dart';
+import 'package:med_nex/Screens/Home/loading.dart';
 import 'package:med_nex/Screens/Home/request_to_many_field.dart';
 import 'package:provider/provider.dart';
 
@@ -82,7 +83,7 @@ class _DoctorRequestsToManyState extends State<DoctorRequestsToMany> {
             },
           );
         }else{
-          return const Text("Loading");
+          return const Loading();
         }
       },
     );

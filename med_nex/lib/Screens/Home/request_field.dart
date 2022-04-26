@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:med_nex/Models/consultation_request.dart';
 import 'package:med_nex/Models/user.dart';
+import 'package:med_nex/Screens/Home/loading.dart';
 import 'package:med_nex/Services/database.dart';
 
 class RequestField extends StatelessWidget {
@@ -45,7 +46,7 @@ class RequestField extends StatelessWidget {
               )
           );
         }else{
-          return const Text('loading');
+          return const Loading();
         }
       },
     );

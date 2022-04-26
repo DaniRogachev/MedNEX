@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:med_nex/Screens/Home/doctor_home.dart';
+import 'package:med_nex/Screens/Home/loading.dart';
 import 'package:med_nex/Services/database.dart';
 import 'package:med_nex/Models/user.dart';
 
@@ -43,7 +44,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
             return Home(currUser: currUser);
           }
         }else {
-          return const Text("Loading");
+          return const Loading();
         }
       },
 
