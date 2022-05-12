@@ -193,7 +193,9 @@ class _HomeState extends State<Home> {
             DoctorList(filters: filterData, currUser: widget.currUser, expandedDoctors: expandedDoctors,),
             OutlinedButton(
                 onPressed: (){
-                  expandedDoctors += 8;
+                  setState((){
+                    expandedDoctors += 8;
+                  });
                   print(expandedDoctors);
                 },
                 child: const Text('Expand'))
@@ -207,14 +209,18 @@ class _HomeState extends State<Home> {
               children: <Widget>[
                 OutlinedButton(
                     onPressed: (){
-                      selectedPatientRequestOption = 0;
+                      setState((){
+                        selectedPatientRequestOption = 0;
+                      });
                       print(selectedPatientRequestOption);
                     },
                     child: const Text('One Doctor')
                 ),
                 OutlinedButton(
                   onPressed: (){
-                    selectedPatientRequestOption = 1;
+                    setState((){
+                      selectedPatientRequestOption = 1;
+                    });
                     print(selectedPatientRequestOption);
                   },
                   child: const Text('Many Doctors')

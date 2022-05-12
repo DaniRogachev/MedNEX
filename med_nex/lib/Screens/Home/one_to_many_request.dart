@@ -154,7 +154,9 @@ class _OneToManyRequestState extends State<OneToManyRequest> {
                     divisions: 100,
                     label: price.round().toString(),
                     onChanged: (double value) {
-                      price = value;
+                      setState((){
+                        price = value;
+                      });
                     },
 
                   ),
